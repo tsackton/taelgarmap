@@ -41,10 +41,7 @@
       noWrap: true,
       bounds: rc.getMaxBounds(),
       maxNativeZoom: rc.zoomLevel(),
-      attribution: 'Map <a href="https://commons.wikimedia.org/wiki/' +
-        'File:Karta_%C3%B6ver_Europa,_1672_-_Skoklosters_slott_-_95177.tif">' +
-        'Karta över Europa, 1672 - Skoklosters</a> under ' +
-        '<a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>'
+      attribution: 'Taelgar Player Map v1.0'
     }).addTo(map)
   }
 
