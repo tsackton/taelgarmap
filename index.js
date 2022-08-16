@@ -68,7 +68,7 @@
   }
 
   /**
-   * layer using geoJson data for countries adding a circle marker
+   * layer using geoJson data for landmarks adding a circle marker
    */
   function layerLandmarks (map, rc) {
     var imgDir = 'images/'
@@ -90,7 +90,7 @@
       // add a popup content to the marker
       onEachFeature: function (feature, layer) {
         if (feature.properties && feature.properties.name) {
-          layer.bindPopup(feature.properties.name)
+          layer.bindPopup(feature.properties.name + '<br><a href="'+ feature.properties.Picture +'"><img src="'+ feature.properties.Picture +'" style="width:250px;height:auto"></a>')
         }
       },
       pointToLayer: function (feature, latlng) {
