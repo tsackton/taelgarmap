@@ -59,7 +59,25 @@
     //total width = 6621/143.58 = 46.11366
     //total height = 6680/143.58 = 46.5245
     //var bounds = [[0,0],[6860,6621]];
-    var bounds = [[13,-29.2032316479],[59.5245,16.9104332]];
+
+
+    //add code to compute bounds from variables
+    var drankorH = 773;
+    var drankorW = 4193;
+    var drankorLat = 18.39;
+    var drankorLon = 0;
+    var imgHeight = 6680;
+    var imgWidth = 6621;
+    var pixToDeg = 143.58;
+
+    //l1 and l2 are the transformations of the [0,0] origin, t1 and t2 are the [w,h] origin
+    var l1 = drankorLat - (drankorH / pixToDeg);
+    var l2 = drankorLon - (drankorW / pixToDeg);
+    var t1 = (imgHeight / pixToDeg) + l1;
+    var t2 = (imgWidth / pixToDeg) + l2;
+
+  //  var bounds = [[13,-29.2032316479],[59.5245,16.9104332]];
+    var bounds = [[l1,l2],[t1,t2]];
     var image = L.imageOverlay('maps/player-map-2022-08-11.png', bounds).addTo(map);
     //
 
