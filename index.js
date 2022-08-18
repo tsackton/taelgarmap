@@ -25,7 +25,7 @@
     var rc = new L.RasterCoords(map, img)
 
     // set the view on a marker ...
-    map.setView(rc.unproject([1589, 1447]), 4)
+    map.setView(rc.unproject([3172,3164]), 3)
 
     // add layer control object
     L.control.layers({}, {
@@ -48,8 +48,8 @@
   function layerBounds (map, rc, img) {
     // set marker at the image bound edges
     var layerBounds = L.layerGroup([
-      L.marker(rc.unproject([0, 0])).bindPopup('[0,0]'),
-      L.marker(rc.unproject(img)).bindPopup(JSON.stringify(img))
+//      L.marker(rc.unproject([0, 0])).bindPopup('[0,0]'),
+//      L.marker(rc.unproject(img)).bindPopup(JSON.stringify(img))
     ])
     map.addLayer(layerBounds)
 
@@ -102,6 +102,5 @@
     map.addLayer(layerLandmarks)
     return layerLandmarks
   }
-
   init('map')
 }(window))

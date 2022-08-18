@@ -5,7 +5,8 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1/dist/leaflet.css" />
-    <style>
+    <link rel="stylesheet" href="src/leaflet-ruler.css" />
+  <style>
       html, body, #map {
         width:100%;
         height:100%;
@@ -18,8 +19,117 @@
   <body>
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet@1/dist/leaflet.js"></script>
-    <script src="rastercoords.js"></script>
-    <script src="geojson.js"></script>
-    <script src="index.js"></script>
+    <script src="src/leaflet-ruler.js"> </script>
+    <script src="./geoJson.js"> </script>
+    <script>
+
+    var yx = L.latLng;
+
+    function xy(x, y) {
+      if (L.Util.isArray(x)) { // When doing xy([x, y]);
+        return yx(x[1], x[0]);
+      }
+      return yx(y, x); // When doing xy(x, y);
+    }
+
+    L.CRS.MySimple = L.extend({}, L.CRS.Simple, {
+      //                      coefficients: a      b    c     d
+      transformation: new L.Transformation(1 / 32, 0, 1 / 32, 0)
+    });
+
+    var map = L.map('map', {
+      crs: L.CRS.Simple,
+      minZoom: -4
+    });
+
+
+    // the tile layer containing the image generated with gdal2tiles --leaflet ...
+    //
+    //L.tileLayer('./tiles/{z}/{x}/{y}.png', {
+    //  noWrap: true,
+    //  minZoom: 0,
+    //  maxZoom: 6,
+    //  attribution: 'Taelgar Player Map v1.0'
+    //}).addTo(map)
+
+    //replace image layer with tiles for testing
+    //bounds calculated based on Drankor at [4193,773] pixels and lon=0,lat=18.39
+    //with 143.58 pixels per degree
+    //var bounds = [[-2032.457, -902.381], [1943.93, 3038.70]];
+    //total width = 6621/143.58 = 46.11366
+    //total height = 6680/143.58 = 46.5245
+    //var bounds = [[0,0],[6860,6621]];
+    var bounds = [[13,-29.2032316479],[59.5245,16.9104332]];
+    var image = L.imageOverlay('maps/player-map-2022-08-11.png', bounds).addTo(map);
+    //
+
+    map.setView([36.77734375,-18.640625], 6);
+
+    /**
+     * layer with markers
+     */
+    function layerBounds (map) {
+      // set marker at the image bound edges
+      var layerBounds = L.layerGroup([
+  //      L.marker(rc.unproject([0, 0])).bindPopup('[0,0]'),
+  //      L.marker(rc.unproject(img)).bindPopup(JSON.stringify(img))
+      ])
+      map.addLayer(layerBounds)
+
+      // set markers on click events in the map
+      map.on('click', function (e) {
+        // to obtain raster coordinates from the map use `project`
+        var coord = e.latlng
+        // to set a marker, ... in raster coordinates in the map use `unproject`
+        var marker = L.marker(coord)
+          .addTo(layerBounds)
+        marker.bindPopup('[' + e.latlng.lng + ',' + e.latlng.lat + ']')
+          .openPopup()
+      })
+
+      return layerBounds
+    }
+
+    /**
+     * layer using geoJson data for landmarks adding a circle marker
+     */
+    function layerLandmarks (map) {
+      var iconDir = 'icons/'
+      var redMarker = L.icon({
+        iconUrl: iconDir + 'marker-icon-red.png',
+        iconRetinaUrl: iconDir + 'marker-icon-red-2x.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [-0, -31],
+        shadowUrl: iconDir + 'marker-shadow.png',
+        shadowSize: [41, 41],
+        shadowAnchor: [14, 41]
+      })
+      var layerLandmarks = L.geoJson(landmarks, {
+        // add a popup content to the marker
+        onEachFeature: function (feature, layer) {
+          if (feature.properties && feature.properties.name) {
+            layer.bindPopup(feature.properties.name + '<br><a href="'+ feature.properties.Picture +'"><img src="'+ feature.properties.Picture +'" style="width:250px;height:auto"></a>')
+          }
+        },
+        pointToLayer: function (feature, latlng) {
+          return L.marker(latlng, {
+            icon: redMarker
+          })
+        }
+      })
+      map.addLayer(layerLandmarks)
+      return layerLandmarks
+    }
+
+	  L.control.ruler().addTo(map);
+
+    // add layer control object
+    L.control.layers({}, {
+      'Landmarks': layerLandmarks(map),
+      'Bounds': layerBounds(map)
+    }).addTo(map)
+
+    </script>
   </body>
 </html>
