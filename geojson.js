@@ -42,7 +42,7 @@ var landmarks = {
       },
       geometry: {
         type: 'Point',
-        coordinates: [-8.71875,55.8203125]]
+        coordinates: [-8.71875,55.8203125]
       }
     },
     {

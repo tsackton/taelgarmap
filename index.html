@@ -19,8 +19,8 @@
   <body>
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet@1/dist/leaflet.js"></script>
-    <script src="src/leaflet-ruler.js"> </script>
-    <script src="./geoJson.js"> </script>
+    <script src="src/leaflet-ruler.js"></script>
+    <script src="geoJson.js"></script>
     <script>
 
     var yx = L.latLng;
@@ -81,7 +81,7 @@
     var image = L.imageOverlay('maps/player-map-2022-08-18.png', bounds).addTo(map);
     //
 
-    map.setView([36.77734375,-18.640625], 6);
+    map.setView([36.77734375,-18.640625], 3);
 
     /**
      * layer with markers
@@ -106,7 +106,7 @@
       })
 
       return layerBounds
-    }
+    };
 
     /**
      * layer using geoJson data for landmarks adding a circle marker
@@ -138,7 +138,7 @@
       })
       map.addLayer(layerLandmarks)
       return layerLandmarks
-    }
+    };
 
 	  L.control.ruler().addTo(map);
 
@@ -146,7 +146,7 @@
     L.control.layers({}, {
       'Landmarks': layerLandmarks(map),
       'Bounds': layerBounds(map)
-    }).addTo(map)
+    }).addTo(map);
 
     </script>
   </body>
