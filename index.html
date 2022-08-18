@@ -62,12 +62,12 @@
 
 
     //add code to compute bounds from variables
-    var drankorH = 773;
-    var drankorW = 4193;
+    var drankorW = 4311;
     var drankorLat = 18.39;
     var drankorLon = 0;
-    var imgHeight = 6680;
-    var imgWidth = 6621;
+    var imgHeight = 9091;
+    var imgWidth = 11711;
+    var drankorH = imgHeight - 6410;
     var pixToDeg = 143.58;
 
     //l1 and l2 are the transformations of the [0,0] origin, t1 and t2 are the [w,h] origin
@@ -78,7 +78,7 @@
 
   //  var bounds = [[13,-29.2032316479],[59.5245,16.9104332]];
     var bounds = [[l1,l2],[t1,t2]];
-    var image = L.imageOverlay('maps/player-map-2022-08-11.png', bounds).addTo(map);
+    var image = L.imageOverlay('maps/player-map-2022-08-18.png', bounds).addTo(map);
     //
 
     map.setView([36.77734375,-18.640625], 6);
